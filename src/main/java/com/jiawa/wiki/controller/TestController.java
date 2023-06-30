@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
 
-    @Value("${test.hello}")
+    @Value("${test.hello:TEST}")//:后面是默认值
     private String testHello;
 
     @GetMapping("/hello")
