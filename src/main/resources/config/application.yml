@@ -2,4 +2,4 @@ server:
   port: 8082
 
 test:
-  hello: Hello
+  hello: Hello1
