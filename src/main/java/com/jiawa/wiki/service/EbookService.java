@@ -5,6 +5,8 @@ import com.jiawa.wiki.pojo.Ebook;
 import com.jiawa.wiki.pojo.EbookExample;
 import com.jiawa.wiki.req.EbookReq;
 import com.jiawa.wiki.resp.EbookResp;
+import com.jiawa.wiki.util.CopyUtil;
+import com.mysql.cj.util.Util;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,12 +26,14 @@ public class EbookService {
         criteria.andNameLike("%"+ ebookReq.getName() +"%");
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
-        List<EbookResp> respList = new ArrayList<>();
+        /*List<EbookResp> respList = new ArrayList<>();
         for (Ebook ebook : ebookList) {
             EbookResp ebookResp = new EbookResp();
             BeanUtils.copyProperties(ebook, ebookResp);
             respList.add(ebookResp);
-        }
+        }*/
+        List<EbookResp> respList = CopyUtil.copyList(ebookList, EbookResp.class);
+
         return respList;
 
     }
