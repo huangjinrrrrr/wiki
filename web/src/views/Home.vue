@@ -9,7 +9,7 @@
           <template #title>
               <span>
                 <user-outlined />
-                subnav 11111
+                subnav 1
               </span>
           </template>
           <a-menu-item key="1">option1</a-menu-item>
@@ -93,7 +93,7 @@ export default defineComponent({
 
     onMounted(() => {
       console.log("onMounted");
-      axios.get("http://localhost:8082/ebook/list?name=p").then(
+      axios.get("http://localhost:8082/ebook/list").then(
           (response) => {
             const data = response.data;
             ebooks.value = data.content;
@@ -121,3 +121,13 @@ export default defineComponent({
   }
 });
 </script>
+
+<style scoped>
+.ant-avatar {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 8%;
+  margin: 5px 0;
+}
+</style>
