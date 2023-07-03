@@ -87,18 +87,15 @@ for (let i = 0; i < 23; i++) {
 export default defineComponent({
   name: 'Home',
   setup() {
-    console.log("setup");
     const ebooks = ref();
     const ebooks1 = reactive({books : []});
 
     onMounted(() => {
-      console.log("onMounted22");
       axios.get("/ebook/list").then(
           (response) => {
             const data = response.data;
             ebooks.value = data.content;
             ebooks1.books = data.content;
-            console.log(response);
           });
     })
 
