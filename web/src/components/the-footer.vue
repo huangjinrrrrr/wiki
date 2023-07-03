@@ -1,6 +1,6 @@
 <template>
   <a-layout-footer style="text-align: center">
-    甲蛙电子书    Ant Design ©2018
+    甲蛙电子书 ©2023
   </a-layout-footer>
 </template>
 
