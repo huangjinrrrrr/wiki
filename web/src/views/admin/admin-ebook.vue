@@ -42,7 +42,7 @@
 <!--                文档管理-->
 <!--              </a-button>-->
 <!--            </router-link>-->
-            <a-button type="primary" >
+            <a-button type="primary" @click="edit">
               编辑
             </a-button>
 <!--            <a-popconfirm-->
@@ -60,10 +60,21 @@
       </a-table>
     </a-layout-content>
   </a-layout>
+
+  <a-modal
+    title="电子书表单"
+    v-model:visible="modalVisible"
+    :confirm-loading="modalLoading"
+    @ok="handleModalOk"
+  >
+    <p>test</p>
+  </a-modal>
 </template>
 
+
+
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref ,reactive} from 'vue';
 import axios from 'axios';
 import { message } from 'ant-design-vue';
 
@@ -186,6 +197,22 @@ export default defineComponent({
       });
     };
 
+    //表单
+    const modalVisible = ref(false);
+    const modalLoading = ref(false);
+    const handleModalOk = () => {
+      modalLoading.value = true;
+      setTimeout(() => {
+        modalLoading.value = false;
+        modalVisible.value =false;
+      },1000)
+    };
+
+    const edit = () => {
+      modalVisible.value=true;
+    };
+
+
     onMounted(() => {
       handleQuery({
         page: 1,
@@ -198,9 +225,22 @@ export default defineComponent({
       pagination,
       columns,
       loading,
-      handleTableChange
+      handleTableChange,
+
+      edit,
+
+      modalVisible,
+      modalLoading,
+      handleModalOk
     }
   }
 });
 
 </script>
+
+<style scoped>
+img {
+  width: 50px;
+  height: 50px;
+}
+</style>

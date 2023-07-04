@@ -67,10 +67,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, reactive, toRef} from 'vue';
+import { defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
 
-const listData: any = [];
+// const listData: any = [];
 
 // for (let i = 0; i < 23; i++) {
 //   listData.push({
@@ -88,7 +88,7 @@ export default defineComponent({
   name: 'Home',
   setup() {
     const ebooks = ref();
-    const ebooks1 = reactive({books : []});
+    // const ebooks1 = reactive({books : []});
 
     onMounted(() => {
       axios.get("/ebook/list",{
