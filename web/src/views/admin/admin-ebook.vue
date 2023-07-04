@@ -50,16 +50,18 @@
             <a-button type="primary" @click="edit(record)">
               编辑
             </a-button>
-<!--            <a-popconfirm-->
-<!--                title="删除后不可恢复，确认删除?"-->
-<!--                ok-text="是"-->
-<!--                cancel-text="否"-->
-<!--                @confirm="handleDelete(record.id)"-->
-<!--            >-->
+
+            <a-popconfirm
+                title="删除后不可恢复，确认删除?"
+                ok-text="是"
+                cancel-text="否"
+                @confirm="handleDelete(record.id)"
+            >
               <a-button type="danger">
                 删除
               </a-button>
-<!--            </a-popconfirm>-->
+            </a-popconfirm>
+
           </a-space>
         </template>
       </a-table>
@@ -86,7 +88,7 @@
         <a-input v-model:value="ebook.category2Id" />
       </a-form-item>
       <a-form-item label="描述">
-        <a-input v-model:value="ebook.desc" type="text" />
+        <a-input v-model:value="ebook.description" type="text" />
       </a-form-item>
     </a-form>
   </a-modal>
@@ -248,6 +250,18 @@ export default defineComponent({
       ebook.value = {}
     };
 
+    const handleDelete = (id : number) => {
+      axios.delete("/ebook/delete/" + id).then((response) => {
+        const data = response.data;
+        if (data.success){
+          handleQuery({
+            page : pagination.value.current,
+            size : pagination.value.pageSize
+          });
+        }
+      });
+    };
+
 
     onMounted(() => {
       handleQuery({
@@ -269,7 +283,9 @@ export default defineComponent({
       ebook,
       modalVisible,
       modalLoading,
-      handleModalOk
+      handleModalOk,
+
+      handleDelete
     }
   }
 });
