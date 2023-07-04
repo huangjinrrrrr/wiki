@@ -97,15 +97,15 @@
 
 
 <script lang="ts">
-import { defineComponent, onMounted, ref ,reactive} from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import axios from 'axios';
 import { message } from 'ant-design-vue';
 
-function getBase64(img: Blob, callback: (base64Url: string) => void) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result as string));
-  reader.readAsDataURL(img);
-}
+// function getBase64(img: Blob, callback: (base64Url: string) => void) {
+//   const reader = new FileReader();
+//   reader.addEventListener('load', () => callback(reader.result as string));
+//   reader.readAsDataURL(img);
+// }
 
 export default defineComponent({
   name: 'AdminEbook',
@@ -209,14 +209,17 @@ export default defineComponent({
     const handleModalOk = () => {
       modalLoading.value = true;
       axios.post("/ebook/save",ebook.value).then((response) => {
+        modalLoading.value = false;
         const data = response.data;
         if (data.success){
-          modalLoading.value = false;
+
           modalVisible.value =false;
           handleQuery({
             page: pagination.value.current,
             size: pagination.value.pageSize,
           });
+        } else {
+          message.error(data.message);
         }
       })
     };
@@ -247,7 +250,7 @@ export default defineComponent({
     onMounted(() => {
       handleQuery({
         page: 1,
-        size: pagination.value.pageSize
+        size: 10
         // size: 1001
       });
     });
