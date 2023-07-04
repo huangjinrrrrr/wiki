@@ -217,12 +217,20 @@ export default defineComponent({
     const ebook = ref({});
     const modalVisible = ref(false);
     const modalLoading = ref(false);
+
     const handleModalOk = () => {
       modalLoading.value = true;
-      setTimeout(() => {
-        modalLoading.value = false;
-        modalVisible.value =false;
-      },1000)
+      axios.post("/ebook/save",ebook.value).then((response) => {
+        const data = response.data;
+        if (data.success){
+          modalLoading.value = false;
+          modalVisible.value =false;
+          handleQuery({
+            page: pagination.value.current,
+            size: pagination.value.pageSize,
+          });
+        }
+      })
     };
 
     const edit = (record: any) => {
