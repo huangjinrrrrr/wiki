@@ -5,7 +5,6 @@ public class EbookQueryReq extends PageReq{
 
     private String name;
 
-
     public Long getId() {
         return id;
     }

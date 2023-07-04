@@ -167,30 +167,6 @@ export default defineComponent({
     /**
      * 数据查询
      **/
-    // const handleQuery = (params: any) => {
-    //   loading.value = true;
-    //   // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
-    //   ebooks.value = [];
-    //   axios.get("/ebook/list", {
-    //     params: {
-    //       page: params.page,
-    //       size: params.size,
-    //       name: param.value.name
-    //     }
-    //   }).then((response) => {
-    //     loading.value = false;
-    //     const data = response.data;
-    //     if (data.success) {
-    //       ebooks.value = data.content.list;
-    //
-    //       // 重置分页按钮
-    //       pagination.value.current = params.page;
-    //       pagination.value.total = data.content.total;
-    //     } else {
-    //       message.error(data.message);
-    //     }
-    //   });
-    // };
     const handleQuery = (params: any) => {
       loading.value = true;
       axios.get("/ebook/list",{
@@ -201,11 +177,16 @@ export default defineComponent({
       }).then((response) => {
         loading.value = false;
         const data = response.data;
-        ebooks.value=data.content.list;
+        if (data.success){
+          ebooks.value=data.content.list;
 
-        // 重置分页按钮
-        pagination.value.current = params.page;
-        pagination.value.total = data.content.total;
+          // 重置分页按钮
+          pagination.value.current = params.page;
+          pagination.value.total = data.content.total;
+        } else {
+          message.error(data.message);
+        }
+
       });
     };
 
@@ -267,6 +248,7 @@ export default defineComponent({
       handleQuery({
         page: 1,
         size: pagination.value.pageSize
+        // size: 1001
       });
     });
 
