@@ -10,6 +10,7 @@ import com.jiawa.wiki.req.EbookSaveReq;
 import com.jiawa.wiki.resp.EbookQueryResp;
 import com.jiawa.wiki.resp.PageResp;
 import com.jiawa.wiki.util.CopyUtil;
+import com.jiawa.wiki.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class EbookService {
 
     @Autowired
     private EbookMapper ebookMapper;
+
+    @Autowired
+    private SnowFlake snowFlake;
 
     public PageResp<EbookQueryResp> list(EbookQueryReq ebookReq){
 
@@ -63,8 +67,14 @@ public class EbookService {
     public void save(EbookSaveReq ebookReq) {
         Ebook ebook =CopyUtil.copy(ebookReq, Ebook.class);
         if (ObjectUtils.isEmpty(ebook.getId())){
+            //新增
+            ebook.setId(snowFlake.nextId());
+            ebook.setDocCount(0);
+            ebook.setViewCount(0);
+            ebook.setVoteCount(0);
             ebookMapper.insert(ebook);
         } else {
+            //修改
             ebookMapper.updateByPrimaryKey(ebook);
         }
     }
