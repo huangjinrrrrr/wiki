@@ -33,6 +33,7 @@ public class CategoryService {
     public PageResp<CategoryQueryResp> list(CategoryQueryReq categoryReq){
 
         CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("sort asc");
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
         if(!ObjectUtils.isEmpty(categoryReq.getName())){
             criteria.andNameLike("%"+ categoryReq.getName() +"%");
@@ -56,6 +57,20 @@ public class CategoryService {
 
     }
 
+    public List<CategoryQueryResp> all(){
+
+        CategoryExample categoryExample = new CategoryExample();
+
+        categoryExample.setOrderByClause("sort asc");
+
+        List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
+
+        List<CategoryQueryResp> list = CopyUtil.copyList(categoryList, CategoryQueryResp.class);
+
+        return list;
+
+    }
+
     public void save(CategorySaveReq categoryReq) {
         Category category =CopyUtil.copy(categoryReq, Category.class);
         if (ObjectUtils.isEmpty(category.getId())){
@@ -70,6 +85,9 @@ public class CategoryService {
 
 
     public void delete(Long id) {
+
         categoryMapper.deleteByPrimaryKey(id);
     }
+
+
 }
