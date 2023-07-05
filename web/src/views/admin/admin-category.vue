@@ -24,7 +24,7 @@
       <a-table
           :columns="columns"
           :row-key="record => record.id"
-          :data-source="categorys"
+          :data-source="level1"
           :loading="loading"
           :pagination="false"
       >
@@ -111,6 +111,18 @@ export default defineComponent({
       }
     ];
 
+    /*  一级分类数
+    [{
+      id: "",
+      name: "",
+      children: [{
+        id: "",
+      name: ""
+      }]
+    }]
+     */
+    const level1 = ref();
+
 
     /**
      * 数据查询
@@ -122,6 +134,10 @@ export default defineComponent({
         const data = response.data;
         if (data.success){
           categorys.value=data.content;
+
+          level1.value = [];
+          level1.value = Tool.array2Tree(categorys.value,0);
+          console.log("树形结构：" + level1.value);
 
         } else {
           message.error(data.message);
@@ -177,7 +193,8 @@ export default defineComponent({
 
     return {
       param,
-      categorys,
+      // categorys,
+      level1,
       columns,
       loading,
       handleQuery,
