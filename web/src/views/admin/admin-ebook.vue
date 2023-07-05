@@ -56,7 +56,6 @@
                 删除
               </a-button>
             </a-popconfirm>
-
           </a-space>
         </template>
       </a-table>
@@ -76,11 +75,13 @@
       <a-form-item label="名称">
         <a-input v-model:value="ebook.name" />
       </a-form-item>
-      <a-form-item label="分类一">
-        <a-input v-model:value="ebook.category1Id" />
-      </a-form-item>
-      <a-form-item label="分类二">
-        <a-input v-model:value="ebook.category2Id" />
+      <a-form-item label="分类">
+        <a-cascader
+          v-model:value="categoryIds"
+          :field-names="{ label: 'name', value: 'id', children: 'children'}"
+          :options="level1"
+        >
+        </a-cascader>
       </a-form-item>
       <a-form-item label="描述">
         <a-input v-model:value="ebook.description" type="text" />
@@ -111,7 +112,7 @@ export default defineComponent({
     const ebooks = ref();
     const pagination = ref({
       current: 1,
-      pageSize: 4,
+      pageSize: 10,
       total: 0
     });
     const loading = ref(false);
@@ -165,6 +166,8 @@ export default defineComponent({
      **/
     const handleQuery = (params: any) => {
       loading.value = true;
+      // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
+      ebooks.value = [];
       axios.get("/ebook/list",{
         params: {
           page: params.page,
@@ -187,6 +190,7 @@ export default defineComponent({
       });
     };
 
+
     /**
      * 表格点击页码时触发
      */
@@ -199,12 +203,16 @@ export default defineComponent({
     };
 
     //表单
-    const ebook = ref({});
+    const categoryIds = ref();//数组  [100，101]对应:前端开发/Vue
+
+    const ebook = ref();
     const modalVisible = ref(false);
     const modalLoading = ref(false);
 
     const handleModalOk = () => {
       modalLoading.value = true;
+      ebook.value.category1Id = categoryIds.value[0];
+      ebook.value.category2Id = categoryIds.value[1];
       axios.post("/ebook/save",ebook.value).then((response) => {
         modalLoading.value = false;
         const data = response.data;
@@ -224,6 +232,7 @@ export default defineComponent({
     const edit = (record: any) => {
       modalVisible.value = true;
       ebook.value = Tool.copy(record);
+      categoryIds.value = [ebook.value.category1Id, ebook.value.category2Id];
     };
 
     const add = () => {
@@ -243,11 +252,36 @@ export default defineComponent({
       });
     };
 
+    const level1 = ref();
+    /**
+     * 查询所有分类
+     */
+    const handleQueryCategory = () => {
+      loading.value = true;
+      axios.get("/category/all").then((response) => {
+        loading.value=false;
+        const data = response.data;
+        if (data.success){
+          const categorys = data.content;
+          console.log("原始数组："+categorys);
+
+          level1.value=[]
+          level1.value=Tool.array2Tree(categorys,0);
+          console.log("树形结构："+level1.value);
+
+
+        } else {
+          message.error(data.message);
+        }
+      });
+    };
+
 
     onMounted(() => {
+      handleQueryCategory();
       handleQuery({
         page: 1,
-        size: 10
+        size: pagination.value.pageSize
         // size: 1001
       });
     });
@@ -268,6 +302,8 @@ export default defineComponent({
       modalVisible,
       modalLoading,
       handleModalOk,
+      categoryIds,
+      level1,
 
       handleDelete
     }
