@@ -1,0 +1,12 @@
+GET http://localhost:8082/doc/list
+
+
+###
+
+
+POST http://localhost:8082/ebook/save
+Content-Type: application/json
+
+{}
+
+###

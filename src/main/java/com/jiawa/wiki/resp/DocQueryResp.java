@@ -1,17 +1,19 @@
-package com.jiawa.wiki.req;
+package com.jiawa.wiki.resp;
 
-import javax.validation.constraints.NotNull;
-
-public class CategorySaveReq {
+public class DocQueryResp {
     private Long id;
+
+    private Long ebookId;
 
     private Long parent;
 
-    @NotNull(message = "[名称]不能为空")
     private String name;
 
-    @NotNull(message = "[排序]不能为空")
     private Integer sort;
+
+    private Integer viewCount;
+
+    private Integer voteCount;
 
     public Long getId() {
         return id;
@@ -19,6 +21,14 @@ public class CategorySaveReq {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getEbookId() {
+        return ebookId;
+    }
+
+    public void setEbookId(Long ebookId) {
+        this.ebookId = ebookId;
     }
 
     public Long getParent() {
@@ -45,14 +55,32 @@ public class CategorySaveReq {
         this.sort = sort;
     }
 
+    public Integer getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
+    }
+
+    public Integer getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(Integer voteCount) {
+        this.voteCount = voteCount;
+    }
+
     @Override
     public String toString() {
-        return "CategorySaveReq{" +
+        return "DocQueryResp{" +
                 "id=" + id +
+                ", ebookId=" + ebookId +
                 ", parent=" + parent +
                 ", name='" + name + '\'' +
                 ", sort=" + sort +
+                ", viewCount=" + viewCount +
+                ", voteCount=" + voteCount +
                 '}';
     }
-
 }
