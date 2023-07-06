@@ -144,7 +144,7 @@ export default defineComponent({
 
           level1.value = [];
           level1.value = Tool.array2Tree(categorys.value,0);
-          console.log("树形结构：" + level1.value);
+          console.log("树形结构：" , level1.value);
 
         } else {
           message.error(data.message);
