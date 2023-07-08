@@ -2,7 +2,9 @@ package com.jiawa.wiki.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.jiawa.wiki.mapper.ContentMapper;
 import com.jiawa.wiki.mapper.DocMapper;
+import com.jiawa.wiki.pojo.Content;
 import com.jiawa.wiki.pojo.Doc;
 import com.jiawa.wiki.pojo.DocExample;
 import com.jiawa.wiki.req.DocQueryReq;
@@ -26,6 +28,9 @@ public class DocService {
 
     @Autowired
     private DocMapper docMapper;
+
+    @Autowired
+    private ContentMapper contentMapper;
 
     @Autowired
     private SnowFlake snowFlake;
@@ -71,15 +76,25 @@ public class DocService {
 
     }
 
-    public void save(DocSaveReq docReq) {
-        Doc doc =CopyUtil.copy(docReq, Doc.class);
+    public void save(DocSaveReq docReq) {//DocSaveReq 对应两张表doc和content
+        Doc doc = CopyUtil.copy(docReq, Doc.class);
+        Content content = CopyUtil.copy(docReq, Content.class);
+
         if (ObjectUtils.isEmpty(doc.getId())){
             //新增
             doc.setId(snowFlake.nextId());
             docMapper.insert(doc);
+
+            content.setId(doc.getId());
+            contentMapper.insert(content);
         } else {
             //修改
             docMapper.updateByPrimaryKey(doc);
+
+            int count = contentMapper.updateByPrimaryKeyWithBLOBs(content);
+            if (count == 0){
+                contentMapper.insert(content);
+            }
         }
     }
 
