@@ -211,6 +211,37 @@ export default defineComponent({
 
     };
 
+    const ids : Array<string> = [];
+    /**
+     * 查找整根树枝
+     */
+    const getDeleteIds = (treeSelectData: any, id: any) => {
+      //遍历某一层的结点
+      for (let i = 0 ;i < treeSelectData.length; i++){
+        const node = treeSelectData[i];
+        if (node.id === id){
+          //当前结点就是目标结点
+          ids.push(id);
+
+          //把所有子结点都加上
+          const children = node.children;
+          if (Tool.isNotEmpty(children)){
+            for (let j = 0; j < children.length; j++){
+              getDeleteIds(children, children[j].id);
+            }
+          }
+
+        } else {
+          //当前结点不是目标结点，去子结点寻找
+          const children = node.children;
+          if (Tool.isNotEmpty(children)){
+            getDeleteIds(children, id);
+          }
+        }
+      }
+
+    };
+
     const edit = (record: any) => {
       modalVisible.value = true;
       doc.value = Tool.copy(record);
@@ -233,7 +264,8 @@ export default defineComponent({
     };
 
     const handleDelete = (id : number) => {
-      axios.delete("/doc/delete/" + id).then((response) => {
+      getDeleteIds(level1.value,id);
+      axios.delete("/doc/delete/" + ids.join(",") ).then((response) => {
         const data = response.data;
         if (data.success){
           handleQuery();
