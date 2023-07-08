@@ -85,11 +85,12 @@
 
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import {createVNode, defineComponent, onMounted, ref} from 'vue';
 import axios from 'axios';
-import { message } from 'ant-design-vue';
+import {message, Modal} from 'ant-design-vue';
 import { Tool } from "@/util/tool";
 import {useRoute} from "vue-router";
+import {ExclamationCircleOutlined} from "@ant-design/icons-vue";
 
 export default defineComponent({
   name: 'AdminDoc',
@@ -211,7 +212,8 @@ export default defineComponent({
 
     };
 
-    const ids : Array<string> = [];
+    const deleteIds : Array<string> = [];
+    const deleteNames : Array<string> = [];
     /**
      * 查找整根树枝
      */
@@ -221,7 +223,8 @@ export default defineComponent({
         const node = treeSelectData[i];
         if (node.id === id){
           //当前结点就是目标结点
-          ids.push(id);
+          deleteIds.push(node.id);
+          deleteNames.push(node.name);
 
           //把所有子结点都加上
           const children = node.children;
@@ -264,12 +267,26 @@ export default defineComponent({
     };
 
     const handleDelete = (id : number) => {
+      // 清空数组，否则多次删除时，数组会一直增加
+      deleteIds.length = 0;
+      deleteNames.length = 0;
       getDeleteIds(level1.value,id);
-      axios.delete("/doc/delete/" + ids.join(",") ).then((response) => {
-        const data = response.data;
-        if (data.success){
-          handleQuery();
-        }
+      Modal.confirm({
+        title: '重要提醒',
+        icon: createVNode(ExclamationCircleOutlined),
+        content: '将删除：[' + deleteNames.join("，") + "] 删除后不可恢复，确认删除？",
+        onOk() {
+          // console.log(ids)
+          axios.delete("/doc/delete/" + deleteIds.join(",")).then((response) => {
+            const data = response.data; // data = commonResp
+            if (data.success) {
+              // 重新加载列表
+              handleQuery();
+            } else {
+              message.error(data.message);
+            }
+          });
+        },
       });
     };
 
