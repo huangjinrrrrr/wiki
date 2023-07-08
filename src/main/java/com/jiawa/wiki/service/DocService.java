@@ -113,4 +113,11 @@ public class DocService {
     }
 
 
+    public String findContent(Long id) {
+        Content content = contentMapper.selectByPrimaryKey(id);
+        if (content!=null && content.getContent()!=null)
+            return content.getContent();
+        else
+            return "";
+    }
 }
