@@ -181,7 +181,7 @@ export default defineComponent({
     treeSelectData.value=[];
     const doc = ref();
     doc.value = {};
-    const modalVisible = ref(false);
+    // const modalVisible = ref(false);
     const modalLoading = ref(false);
     const editor = new E('#content');
     editor.config.zIndex = 0;
@@ -194,8 +194,8 @@ export default defineComponent({
         modalLoading.value = false;
         const data = response.data;
         if (data.success){
-
-          modalVisible.value =false;
+          message.success("保存成功")
+          // modalVisible.value =false;
           handleQuery();
         } else {
           message.error(data.message);
@@ -287,7 +287,10 @@ export default defineComponent({
      * 编辑
      */
     const edit = (record: any) => {
-      modalVisible.value = true;
+      //清空富文本框
+      editor.txt.html("");
+
+      // modalVisible.value = true;
       doc.value = Tool.copy(record);
       handleQueryContent();
 
@@ -298,8 +301,14 @@ export default defineComponent({
 
     };
 
+    /**
+     * 增加
+     */
     const add = () => {
-      modalVisible.value = true;
+      //清空富文本框
+      editor.txt.html("");
+
+      // modalVisible.value = true;
       doc.value = {
         ebookId: route.query.ebookId
       };
@@ -354,7 +363,7 @@ export default defineComponent({
       add,
 
       doc,
-      modalVisible,
+      // modalVisible,
       modalLoading,
       handleSave,
 
