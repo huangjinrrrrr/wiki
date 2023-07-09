@@ -9,6 +9,7 @@
             @select="onSelect"
             :replaceFields="{title: 'name', key: 'id', value: 'id'}"
             :defaultExpandAll="true"
+            :defaultSelectedKeys="defaultSelectedKeys"
           >
           </a-tree>
         </a-col>
@@ -55,6 +56,9 @@ export default defineComponent({
 
     const html = ref();
 
+    const defaultSelectedKeys = ref();
+    defaultSelectedKeys.value = [];
+
     /*  一级分类树
     [{
       id: "",
@@ -67,6 +71,20 @@ export default defineComponent({
      */
     const level1 = ref();
     level1.value = [];
+
+    /**
+     * 内容查询
+     **/
+    const handleQueryContent = (id: number) => {
+      axios.get("/doc/find-content/" + id ).then((response) => {
+        const data = response.data;
+        if (data.success){
+          html.value = data.content;
+        } else {
+          message.error(data.message);
+        }
+      });
+    };
 
 
     /**
@@ -82,6 +100,12 @@ export default defineComponent({
           level1.value = [];
           level1.value = Tool.array2Tree(docs.value,0);
 
+          if (Tool.isNotEmpty(level1)){
+            //将结点设置为选中状态
+            defaultSelectedKeys.value = [level1.value];
+            handleQueryContent(level1.value[0].id);
+          }
+
         } else {
           message.error(data.message);
         }
@@ -90,19 +114,7 @@ export default defineComponent({
     };
 
 
-    /**
-     * 内容查询
-     **/
-    const handleQueryContent = (id: number) => {
-      axios.get("/doc/find-content/" + id ).then((response) => {
-        const data = response.data;
-        if (data.success){
-          html.value = data.content;
-        } else {
-          message.error(data.message);
-        }
-      });
-    };
+
 
     const onSelect = (selectedKeys: any, info: any) => {
       console.log('selected',selectedKeys, info);
