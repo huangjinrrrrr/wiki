@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
@@ -76,6 +77,7 @@ public class DocService {
 
     }
 
+    @Transactional
     public void save(DocSaveReq docReq) {//DocSaveReq 对应两张表doc和content
         Doc doc = CopyUtil.copy(docReq, Doc.class);
         Content content = CopyUtil.copy(docReq, Content.class);

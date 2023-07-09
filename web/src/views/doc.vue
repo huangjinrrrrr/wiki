@@ -13,7 +13,19 @@
           </a-tree>
         </a-col>
         <a-col :span="18">
-          <div class="wangeditor" :innerHTML="html"></div>
+          <div>
+            <h2></h2>
+            <div>
+              <span>阅读数：</span> &nbsp; &nbsp;
+              <span>点赞数：</span>
+            </div>
+            <a-divider style="height: 2px; background-color: #9999cc"/>
+          </div>
+          <div class="editor-content-view" :innerHTML="html"></div>
+          <div class="vote-div">
+            <a-button type="primary">
+            </a-button>
+          </div>
         </a-col>
       </a-row>
     </a-layout-content>
@@ -120,54 +132,61 @@ export default defineComponent({
 
 <style>
 /* wangeditor默认样式 */
-/* table 样式 */
-.wangeditor table {
-  border-top: 1px solid #ccc;
-  border-left: 1px solid #ccc;
-}
-.wangeditor table td,
-.wangeditor table th {
-  border-bottom: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-  padding: 3px 5px;
-}
-.wangeditor table th {
-  border-bottom: 2px solid #ccc;
-  text-align: center;
+.editor-content-view {
+  border: 3px solid #ccc;
+  border-radius: 5px;
+  padding: 0 10px;
+  margin-top: 20px;
+  overflow-x: auto;
 }
 
-/* blockquote 样式 */
-.wangeditor blockquote {
-  display: block;
+.editor-content-view p,
+.editor-content-view li {
+  white-space: pre-wrap; /* 保留空格 */
+}
+
+.editor-content-view blockquote {
   border-left: 8px solid #d0e5f2;
-  padding: 5px 10px;
+  padding: 10px 10px;
   margin: 10px 0;
-  line-height: 1.4;
-  font-size: 100%;
   background-color: #f1f1f1;
 }
 
-/* code 样式 */
-.wangeditor code {
-  display: inline-block;
-  *display: inline;
-  *zoom: 1;
-  background-color: #f1f1f1;
+.editor-content-view code {
+  font-family: monospace;
+  background-color: #eee;
+  padding: 3px;
   border-radius: 3px;
-  padding: 3px 5px;
-  margin: 0 3px;
 }
-.wangeditor pre code {
+.editor-content-view pre>code {
   display: block;
+  padding: 10px;
 }
 
-/* ul ol 样式 */
-.wangeditor ul, ol {
-  margin: 10px 0 10px 20px;
+.editor-content-view table {
+  border-collapse: collapse;
+}
+.editor-content-view td,
+.editor-content-view th {
+  border: 1px solid #ccc;
+  min-width: 50px;
+  height: 20px;
+}
+.editor-content-view th {
+  background-color: #f1f1f1;
+}
+
+.editor-content-view ul,
+.editor-content-view ol {
+  padding-left: 20px;
+}
+
+.editor-content-view input[type="checkbox"] {
+  margin-right: 5px;
 }
 
 /* 和antdv p冲突，覆盖掉 */
-.wangeditor blockquote p {
+.editor-content-view p {
   font-family:"YouYuan";
   margin: 20px 10px !important;
   font-size: 16px !important;
