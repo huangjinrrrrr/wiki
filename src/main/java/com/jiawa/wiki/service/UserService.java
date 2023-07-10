@@ -8,6 +8,7 @@ import com.jiawa.wiki.mapper.UserMapper;
 import com.jiawa.wiki.pojo.User;
 import com.jiawa.wiki.pojo.UserExample;
 import com.jiawa.wiki.req.UserQueryReq;
+import com.jiawa.wiki.req.UserRestPasswordReq;
 import com.jiawa.wiki.req.UserSaveReq;
 import com.jiawa.wiki.resp.UserQueryResp;
 import com.jiawa.wiki.resp.PageResp;
@@ -81,6 +82,14 @@ public class UserService {
             user.setPassword(null);
             userMapper.updateByPrimaryKeySelective(user);
         }
+    }
+
+    //修改密码
+    public void resetPassword(UserRestPasswordReq userRestPasswordReq) {
+        User user =CopyUtil.copy(userRestPasswordReq, User.class);
+
+        userMapper.updateByPrimaryKeySelective(user);
+
     }
 
 
