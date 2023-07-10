@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.DigestUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Collections;
@@ -65,7 +66,7 @@ public class UserService {
         User user =CopyUtil.copy(userReq, User.class);
         if (ObjectUtils.isEmpty(user.getId())){
             //新增
-            User userDB = selectByLoginName(userReq.getLoginName());
+            User userDB = selectByLoginName(userReq.getLoginName());//判断用户名是否存在
             if(ObjectUtils.isEmpty(userDB)){
                 user.setId(snowFlake.nextId());
                 userMapper.insert(user);
@@ -87,6 +88,7 @@ public class UserService {
     }
 
 
+    //判断用户名是否存在
     public User selectByLoginName(String LoginName){
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
