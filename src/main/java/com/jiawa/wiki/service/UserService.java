@@ -78,6 +78,7 @@ public class UserService {
         } else {
             //修改
             user.setLoginName(null);//Selective，user中有的值才会更新，防止LoginName被更改
+            user.setPassword(null);
             userMapper.updateByPrimaryKeySelective(user);
         }
     }
