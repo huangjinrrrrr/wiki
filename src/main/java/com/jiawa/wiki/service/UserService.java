@@ -7,9 +7,11 @@ import com.jiawa.wiki.exception.BusinessExceptionCode;
 import com.jiawa.wiki.mapper.UserMapper;
 import com.jiawa.wiki.pojo.User;
 import com.jiawa.wiki.pojo.UserExample;
+import com.jiawa.wiki.req.UserLoginReq;
 import com.jiawa.wiki.req.UserQueryReq;
 import com.jiawa.wiki.req.UserRestPasswordReq;
 import com.jiawa.wiki.req.UserSaveReq;
+import com.jiawa.wiki.resp.UserLoginResp;
 import com.jiawa.wiki.resp.UserQueryResp;
 import com.jiawa.wiki.resp.PageResp;
 import com.jiawa.wiki.util.CopyUtil;
@@ -111,5 +113,24 @@ public class UserService {
             return users.get(0);
         }
 
+    }
+
+    public UserLoginResp login(UserLoginReq userLoginReq) {
+        User userDB = selectByLoginName(userLoginReq.getLoginName());
+        if (userDB == null){
+            LOG.info("用户名不存在,{}", userLoginReq.getLoginName());
+            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+
+        } else {
+            if (userDB.getPassword().equals(userLoginReq.getPassword())){
+                //登录成功
+                UserLoginResp userLoginResp = CopyUtil.copy(userDB, UserLoginResp.class);
+                return userLoginResp;
+            } else {
+                LOG.info("密码不对，输入的密码：{},数据库密码：{}", userLoginReq.getPassword(),userDB.getPassword());
+                throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+            }
+
+        }
     }
 }

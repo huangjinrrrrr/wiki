@@ -1,9 +1,11 @@
 package com.jiawa.wiki.controller;
 
+import com.jiawa.wiki.req.UserLoginReq;
 import com.jiawa.wiki.req.UserQueryReq;
 import com.jiawa.wiki.req.UserRestPasswordReq;
 import com.jiawa.wiki.req.UserSaveReq;
 import com.jiawa.wiki.resp.CommonResp;
+import com.jiawa.wiki.resp.UserLoginResp;
 import com.jiawa.wiki.resp.UserQueryResp;
 import com.jiawa.wiki.resp.PageResp;
 import com.jiawa.wiki.service.UserService;
@@ -49,6 +51,15 @@ public class UserController {
     public CommonResp delete(@PathVariable Long id){
         CommonResp resp= new CommonResp();
         userService.delete(id);
+        return resp;
+    }
+
+    @PostMapping("/login")
+    public CommonResp login(@Valid @RequestBody UserLoginReq userLoginReq){
+        CommonResp<UserLoginResp> resp = new CommonResp<>();
+        userLoginReq.setPassword(DigestUtils.md5DigestAsHex(userLoginReq.getPassword().getBytes()));
+        UserLoginResp userLoginResp = userService.login(userLoginReq);
+        resp.setContent(userLoginResp);
         return resp;
     }
 
