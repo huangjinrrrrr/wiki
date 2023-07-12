@@ -85,5 +85,12 @@ public class UserController {
     }
 
 
+    @GetMapping("/logout/{token}")
+    public CommonResp delete(@PathVariable String token){
+        CommonResp resp= new CommonResp<>();
+        redisTemplate.delete(token);
+        LOG.info("从Redis中清除token: {}",token);
+        return resp;
+    }
 
 }
