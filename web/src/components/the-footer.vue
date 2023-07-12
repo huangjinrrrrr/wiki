@@ -11,9 +11,7 @@ import store from "@/store";
 export default defineComponent({
   name: 'the-footer',
   setup() {
-    const user = computed(() =>
-      store.state.user
-    );
+    const user = computed(() => store.state.user);
     return {
       user
     }
