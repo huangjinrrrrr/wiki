@@ -11,6 +11,8 @@ public class UserLoginResp {
     @NotNull(message = "[昵称]不能为空")
     private String name;
 
+    private String token;
+
     public Long getId() {
         return id;
     }
@@ -35,12 +37,21 @@ public class UserLoginResp {
         this.name = name;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Override
     public String toString() {
         return "UserLoginResp{" +
                 "id=" + id +
                 ", loginName='" + loginName + '\'' +
                 ", name='" + name + '\'' +
+                ", token='" + token + '\'' +
                 '}';
     }
 }

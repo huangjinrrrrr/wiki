@@ -19,6 +19,7 @@ import com.jiawa.wiki.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
@@ -39,7 +40,6 @@ public class UserService {
     private SnowFlake snowFlake;
 
     public PageResp<UserQueryResp> list(UserQueryReq userReq){
-
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
         if(!ObjectUtils.isEmpty(userReq.getLoginName())){
