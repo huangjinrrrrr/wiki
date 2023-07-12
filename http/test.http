@@ -9,3 +9,13 @@ Content-Type: application/x-www-form-urlencoded
 name=TEST
 
 ###
+
+GET http://localhost:8082/redis/set/123/v123
+Accept: application/json
+
+###
+
+GET http://localhost:8082/redis/get/334327028994150400
+Accept: application/json
+
+###
