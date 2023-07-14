@@ -42,6 +42,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
                         "/ebook/upload/avatar",
                         "/file/**"
                 );//排除不需要登录的
+
     }
 
 }
