@@ -135,4 +135,8 @@ public class DocService {
     }
 
 
+    public void vote(Long id) {
+        //文档点赞数+1
+        docMapperCust.increaseVoteCount(id);
+    }
 }

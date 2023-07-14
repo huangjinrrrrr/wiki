@@ -25,7 +25,8 @@
           </div>
           <div class="wangeditor" :innerHTML="html"></div>
           <div class="vote-div">
-            <a-button type="primary">
+            <a-button type="primary" shape="round" :size="'large'" @click="vote">
+              <template #icon><LikeOutLine /> &nbsp;点赞：{{doc.voteCount}}</template>
             </a-button>
           </div>
         </a-col>
@@ -129,7 +130,19 @@ export default defineComponent({
         //加载内容
         handleQueryContent(selectedKeys[0]);
       }
-    }
+    };
+    
+    
+    const vote = () => {
+      axios.get('/doc/vote/' + doc.value.id).then((response) => {
+        const data = response.data;
+        if (data.success) {
+          doc.value.voteCount++;
+        } else {
+          message.error(data.message);
+        }
+      });
+    };
 
 
     onMounted(() => {
@@ -143,7 +156,8 @@ export default defineComponent({
       html,
       onSelect,
       defaultSelectedKeys,
-      doc
+      doc,
+      vote
     }
   }
 });
@@ -152,9 +166,15 @@ export default defineComponent({
 
 
 <style>
+.vote-div {
+  padding: 15px;
+  text-align: center;
+}
+
+
 /* wangeditor默认样式 */
 .wangeditor {
-  border: 3px solid #ccc;
+  border: 3px solid #ffffff;
   border-radius: 5px;
   padding: 0 10px;
   margin-top: 20px;
