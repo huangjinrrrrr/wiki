@@ -17,7 +17,8 @@ module.exports = {
     'vue/no-unused-components': 'off',
     ' @typescript-eslint/no-explicit-any': 'off',
     'vue/no-unused-vars': 'off',
-    '@typescript-eslint/no-explicit-any': 'off'
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/ban-types': 'off'
 
   }
 }
