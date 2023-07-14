@@ -181,7 +181,7 @@ export default defineComponent({
           console.log("树形结构：" , level1.value);
 
           //父文档下拉框初始化，打开页面不用点击新增
-          treeSelectData.value = Tool.copy(level1.value);
+          treeSelectData.value = Tool.copy(level1.value) || [];
           treeSelectData.value.unshift({id: 0, name: '无'});
 
         } else {
@@ -329,7 +329,7 @@ export default defineComponent({
         ebookId: route.query.ebookId
       };
 
-      treeSelectData.value = Tool.copy(level1.value);
+      treeSelectData.value = Tool.copy(level1.value) || [];
 
       treeSelectData.value.unshift({id: 0, name: '无'});
 
