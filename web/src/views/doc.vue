@@ -16,14 +16,14 @@
         </a-col>
         <a-col :span="18">
           <div>
-            <h2></h2>
+            <h2>{{doc.name}}</h2>
             <div>
-              <span>阅读数：</span> &nbsp; &nbsp;
-              <span>点赞数：</span>
+              <span>阅读数：{{doc.viewCount}}</span> &nbsp; &nbsp;
+              <span>点赞数：{{doc.voteCount}}</span>
             </div>
             <a-divider style="height: 2px; background-color: #9999cc"/>
           </div>
-          <div class="editor-content-view" :innerHTML="html"></div>
+          <div class="wangeditor" :innerHTML="html"></div>
           <div class="vote-div">
             <a-button type="primary">
             </a-button>
@@ -48,10 +48,6 @@ export default defineComponent({
   name: 'Doc',
   setup() {
     const route = useRoute()
-    console.log("路由：", route);
-    console.log("route.path：", route.path);
-    console.log("route.query：", route.query);
-
 
     const docs = ref();
 
@@ -59,6 +55,10 @@ export default defineComponent({
 
     const defaultSelectedKeys = ref();
     defaultSelectedKeys.value = [];
+
+    //当前选中的文档
+    const doc = ref();
+    doc.value = {};
 
     /*  一级分类树
     [{
@@ -105,6 +105,9 @@ export default defineComponent({
             //将结点设置为选中状态
             defaultSelectedKeys.value = [level1.value[0].id];
             handleQueryContent(level1.value[0].id);
+
+            //显示初始文档
+            doc.value = level1.value[0];
           }
 
         } else {
@@ -120,6 +123,9 @@ export default defineComponent({
     const onSelect = (selectedKeys: any, info: any) => {
       console.log('selected',selectedKeys, info);
       if (Tool.isNotEmpty(selectedKeys)){
+        //加载文档信息
+        doc.value = info.selectedNodes[0].props;
+
         //加载内容
         handleQueryContent(selectedKeys[0]);
       }
@@ -135,7 +141,9 @@ export default defineComponent({
     return {
       level1,
       html,
-      onSelect
+      onSelect,
+      defaultSelectedKeys,
+      doc
     }
   }
 });
@@ -145,7 +153,7 @@ export default defineComponent({
 
 <style>
 /* wangeditor默认样式 */
-.editor-content-view {
+.wangeditor {
   border: 3px solid #ccc;
   border-radius: 5px;
   padding: 0 10px;
@@ -153,53 +161,53 @@ export default defineComponent({
   overflow-x: auto;
 }
 
-.editor-content-view p,
-.editor-content-view li {
+.wangeditor p,
+.wangeditor li {
   white-space: pre-wrap; /* 保留空格 */
 }
 
-.editor-content-view blockquote {
+.wangeditor blockquote {
   border-left: 8px solid #d0e5f2;
   padding: 10px 10px;
   margin: 10px 0;
   background-color: #f1f1f1;
 }
 
-.editor-content-view code {
+.wangeditor code {
   font-family: monospace;
   background-color: #eee;
   padding: 3px;
   border-radius: 3px;
 }
-.editor-content-view pre>code {
+.wangeditor pre>code {
   display: block;
   padding: 10px;
 }
 
-.editor-content-view table {
+.wangeditor table {
   border-collapse: collapse;
 }
-.editor-content-view td,
-.editor-content-view th {
+.wangeditor td,
+.wangeditor th {
   border: 1px solid #ccc;
   min-width: 50px;
   height: 20px;
 }
-.editor-content-view th {
+.wangeditor th {
   background-color: #f1f1f1;
 }
 
-.editor-content-view ul,
-.editor-content-view ol {
+.wangeditor ul,
+.wangeditor ol {
   padding-left: 20px;
 }
 
-.editor-content-view input[type="checkbox"] {
+.wangeditor input[type="checkbox"] {
   margin-right: 5px;
 }
 
 /* 和antdv p冲突，覆盖掉 */
-.editor-content-view p {
+.wangeditor p {
   font-family:"YouYuan";
   margin: 20px 10px !important;
   font-size: 16px !important;
