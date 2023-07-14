@@ -55,7 +55,9 @@ public class LogAspect {
         LOG.info("类名方法: {}.{}", signature.getDeclaringTypeName(), name);
         LOG.info("远程地址: {}", request.getRemoteAddr());
 
+
         RequestContext.setRemoteAddr(getRemoteIp(request));
+
 
         // 打印请求参数
         Object[] args = joinPoint.getArgs();
@@ -92,6 +94,8 @@ public class LogAspect {
         return result;
     }
 
+
+
     /**
      * 使用nginx做反向代理，需要用该方法才能取到真实的远程IP
      * @param request
@@ -110,5 +114,7 @@ public class LogAspect {
         }
         return ip;
     }
+
+
 
 }
