@@ -101,9 +101,9 @@ export default defineComponent({
           level1.value = [];
           level1.value = Tool.array2Tree(docs.value,0);
 
-          if (Tool.isNotEmpty(level1)){
+          if (Tool.isNotEmpty(level1.value)){
             //将结点设置为选中状态
-            defaultSelectedKeys.value = [level1.value];
+            defaultSelectedKeys.value = [level1.value[0].id];
             handleQueryContent(level1.value[0].id);
           }
 
