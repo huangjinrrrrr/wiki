@@ -19,6 +19,7 @@ import com.jiawa.wiki.util.RedisUtil;
 import com.jiawa.wiki.util.RequestContext;
 import com.jiawa.wiki.util.SnowFlake;
 import com.jiawa.wiki.websocket.WebSocketServer;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -52,6 +53,9 @@ public class DocService {
 
     @Autowired
     private WsService wsService;
+
+    @Autowired
+    private RocketMQTemplate rocketMQTemplate;
 
 
     public PageResp<DocQueryResp> list(DocQueryReq docReq){
@@ -154,7 +158,8 @@ public class DocService {
 //        docMapperCust.increaseVoteCount(id);
 
         String ip = RequestContext.getRemoteAddr();
-        if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 3600 * 24)){
+//        if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 3600 * 24)){
+        if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 5)){
             docMapperCust.increaseVoteCount(id);
         } else {//点过赞了
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
@@ -163,7 +168,8 @@ public class DocService {
         // 推送消息
         Doc docDB = docMapper.selectByPrimaryKey(id);
         String logId = MDC.get("LOG_ID");
-        wsService.sendInfo("【" + docDB.getName() + "】被点赞！",logId);
+//        wsService.sendInfo("【" + docDB.getName() + "】被点赞！",logId);
+        rocketMQTemplate.convertAndSend("VOTE_TOPIC","【" + docDB.getName() + "】被点赞！");
     }
 
     public void updateEbookInfo(){
