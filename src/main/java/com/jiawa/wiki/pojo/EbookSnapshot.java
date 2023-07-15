@@ -3,6 +3,7 @@ package com.jiawa.wiki.pojo;
 import java.util.Date;
 
 public class EbookSnapshot {
+
     private Long id;
 
     private Long ebookId;
