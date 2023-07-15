@@ -19,7 +19,7 @@ import com.jiawa.wiki.util.RedisUtil;
 import com.jiawa.wiki.util.RequestContext;
 import com.jiawa.wiki.util.SnowFlake;
 import com.jiawa.wiki.websocket.WebSocketServer;
-import org.apache.rocketmq.spring.core.RocketMQTemplate;
+    //import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -54,8 +54,8 @@ public class DocService {
     @Autowired
     private WsService wsService;
 
-    @Autowired
-    private RocketMQTemplate rocketMQTemplate;
+//    @Autowired
+//    private RocketMQTemplate rocketMQTemplate;
 
 
     public PageResp<DocQueryResp> list(DocQueryReq docReq){
@@ -168,8 +168,8 @@ public class DocService {
         // 推送消息
         Doc docDB = docMapper.selectByPrimaryKey(id);
         String logId = MDC.get("LOG_ID");
-//        wsService.sendInfo("【" + docDB.getName() + "】被点赞！",logId);
-        rocketMQTemplate.convertAndSend("VOTE_TOPIC","【" + docDB.getName() + "】被点赞！");
+        wsService.sendInfo("【" + docDB.getName() + "】被点赞！",logId);
+//        rocketMQTemplate.convertAndSend("VOTE_TOPIC","【" + docDB.getName() + "】被点赞！");
     }
 
     public void updateEbookInfo(){
