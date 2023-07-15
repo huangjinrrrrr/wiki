@@ -23,6 +23,6 @@ public class VoteTopicConsumer implements RocketMQListener<MessageExt> {
     public void onMessage(MessageExt messageExt) {
         byte[] body = messageExt.getBody();
         LOG.info("ROCKETMQ收到消息：{}", new String(body));
-//        webSocketServer.sendInfo(new String(body));
+        webSocketServer.sendInfo(new String(body));
     }
 }
