@@ -1,6 +1,6 @@
 <template>
   <a-layout-header class="header">
-    <div class="logo" />
+    <div class="logo" >wiki知识库</div>
     <a class="login-menu" v-show="!user.id" @click="showLoginModal">
       <span>登录</span>
     </a>
@@ -135,9 +135,18 @@ export default defineComponent({
 </script>
 
 <style>
-.login-menu {
-  float: right;
-  color: white;
-  padding-left: 10px;
-}
+  .logo {
+    width: 120px;
+    height: 60px;
+    /*background: rgba(255, 255, 255, 0.2);*/
+    /*margin: 16px 28px 16px 0;*/
+    float: left;
+    color: white;
+    font-size: 18px;
+  }
+  .login-menu {
+    float: right;
+    color: white;
+    padding-left: 10px;
+  }
 </style>
