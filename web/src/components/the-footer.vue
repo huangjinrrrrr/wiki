@@ -1,6 +1,6 @@
 <template>
   <a-layout-footer style="text-align: center">
-    甲蛙电子书 ©2023 {{user.name}}
+    wiki知识库电子书 ©2023 {{user.name}}
   </a-layout-footer>
 </template>
 

@@ -4,10 +4,12 @@
   <div class="about">
     <h1>关于我们</h1>
     <div>
-      <b>项目：
+      <b>
         <a href="" target="_blank">
-          SpringBoot+Vue3 WIKI知识库系统
+          WIKI知识库系统
         </a>
+        <br />
+        作者邮箱：1413127940@qq.com
       </b>
     </div>
   </div>
